@@ -13,20 +13,29 @@
     
     <script src="bastly.js"></script>
     <script>
-    var bastly = bastly("paco","paco",function callback(data){
+    var bastly = bastly({
+                    from: 'webclient',
+                    apiKey: "7b6696d0-0d4a-11e5-8f7e-095df2532ac5",
+                    // connector: '192.168.1.234',
+                    // curaca: '192.168.1.236',
+                    opsCallback: function (error, data) {
+                        console.log("got an ops response " + error + data);
+                    },
+                    callback: function (data) {
+                        console.log("got a channel msg" + data);
+                    }
+                });
 
-        console.log('message received', data);
-
-    }, 'connectorrest.bastly.com');
-
-    console.log("bastyl is: ", bastly);
+    bastly.subscribe('webclient', function messageCb (data){
+            console.log('Msg recived---------------------------', data);
+        }, function finishedSubscription (error, data){
+            console.log("sending messages ////////////////" + error);
+        });
 
     $( "#send" ).click(function() {
-      alert( "Handler for .click() called." );
-      bastly.send("goofyahead", {spell: "fireball", material: "fire", strength: "12"}, function (data) {
-        console.log('response received');
+        bastly.send('webclient', {me : 'hi'});
+        // bastly.send("webclient", {spell: "fireball", material: "fire", strength: "12"});
     });
-  });
 
     </script>
 
